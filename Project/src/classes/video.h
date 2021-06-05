@@ -11,8 +11,9 @@ class Video{
         string title; 
         string genre;
         float time; // Video duration
-        float rating; 
+        float initialRating;
         string desc; // Video description 
+        vector<float> userRatings; 
 
     public:
         Video();
@@ -22,15 +23,17 @@ class Video{
         void setTitle(string ti){title = ti;};
         void setGenre(string g){genre = g;};
         void setTime(float t){time = t;};
-        void setRating(float r){rating = r;};
+        void setInitialRating(float r){initialRating = r;};
         void setDesc(string d){desc = d;};
+        void setUserRatings(vector<float> rat){userRatings = rat;};
         
         int getId(){return id;};
         string getTitle(){return title;};
         string getGenre(){return genre;};
         float getTime(){return time;};
-        float getRating(){return rating;};
+        float getInitialRating(){return initialRating;};
         string getDesc(){return desc;};
+        vector<float> getUserRatings(){return userRatings;};
         
         virtual void show(){cout<<" "<<endl;};
     };
@@ -41,7 +44,7 @@ Video::Video(){
     title = "";
     genre = "";
     time = 0.0;
-    rating = 0.0;
+    initialRating = 0.0;
     desc = "";
 }
 
@@ -51,7 +54,7 @@ Video::Video(int i, string ti, string g, float t, float r, string d){
     time = t;
     title = ti;
     genre = g;
-    rating = r;
+    initialRating = r;
     desc = d;
 }
 
