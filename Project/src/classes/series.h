@@ -12,7 +12,7 @@ class Episode : public Video{
 
     public:
         Episode();
-        Episode(int, string, string, float, float, string, string, int, int);
+        Episode(string, string, string, float, float, string, string, int, int);
         
         void setSeriesTitle(string ti){seriesTitle = ti;};
         void setSeason(int s){season = s;};
@@ -25,13 +25,13 @@ class Episode : public Video{
         void show();
     };
 
-Episode::Episode(){
+Episode::Episode() : Video(){
     seriesTitle = "";
     season = -1;
     episode = -1;
 }
 
-Episode::Episode(int i, string t, string g, float ti, float r, string d, string st, int sea, int ep): Video(i, t, g, ti,r, d) {
+Episode::Episode(string i, string tit, string g, float tim, float r, string d, string st, int sea, int ep) : Video(i, tit, g, tim,r, d) {
     seriesTitle = st;
     season = sea;
     episode = ep;
