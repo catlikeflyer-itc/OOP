@@ -7,10 +7,16 @@ using namespace std;
 class Movie : public Video{
     public:
         Movie();
-        Movie(int, string, string, float, float, string);
+        Movie(string, string, string, float, float, string);
         
         void show();
 };
+
+Movie::Movie() : Video(){ 
+}
+
+Movie::Movie(string i, string tit, string g, float tim, float r, string d) : Video(i, tit, g, tim, r, d){
+}
 
 void Movie::show() {
     cout << "ID: " << id << endl;
