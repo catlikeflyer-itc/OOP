@@ -9,6 +9,7 @@ class Movie : public Video{
         Movie();
         Movie(string, string, string, float, float, string);
         void show();
+        void show_in_line();
 };
 
 Movie::Movie() : Video(){ 
@@ -30,6 +31,10 @@ void Movie::show() {
             cout << "User ratings: " << userRatings[i] << endl;
         }
     } else { cout << "No one has rated this movie yet!" << endl; };
+}
+
+void Movie::show_in_line() {
+    cout << id << "\t" << title << "\t" << genre << endl;
 }
 
 #endif

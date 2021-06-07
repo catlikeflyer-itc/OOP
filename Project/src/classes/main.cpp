@@ -43,7 +43,7 @@ vector<Movie> read_movies() {
     return movie_v;
 }
 
-// Returns Episode vector from series_full.csv
+// Returns a tuple containing an Episode vector and series names string vector from series_full.csv
 tuple <vector<Episode>, vector<string>> read_series() {
     ifstream myFile;
     string line, word, row[9];
@@ -76,24 +76,64 @@ tuple <vector<Episode>, vector<string>> read_series() {
     return {ep_v, series_v};
 }
 
+// Prints menu for user to choose what type of search they'd do
+int menu() {
+    string user_input;
+    bool ready = false;
 
-int main(){
+    while (!ready) {
+        cout << "Welcome to Tecsney+\n---------------------------------------------------\nAn online movie catalogue\n\n" << endl;
+        cout << "What would you like to do today?: \n" << endl;
+        cout << "1. See full catalogue \n2. See movies catalogue \n3. See series catalogue \n4. Search for specific collection" << endl;
+
+        cin >> user_input;
+
+        if (user_input == "1" || user_input == "3" || user_input == "2" || user_input == "4") {
+            cout << "Searching..." << endl;
+            return stoi(user_input);
+        }
+
+        cout << "Invalid choice, try again!!!" << endl; 
+    }
+
+    return 404;
+}
+
+int main() {
     vector <Movie> mov_ob = read_movies(); // vector de objetos Movie, es decir, vector que tiene todas las peliculas como objetos individuales. (no se si funciona en practica)
     vector <Episode> all_ep_obj = get<0>(read_series()); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
     vector <string> series_names = get<1>(read_series());
+    int choice = menu();
 
-    cout << "funciona" << endl;
+    switch (choice)
+    {
+    case 1:
+        for(int i = 0; i < mov_ob.size(); i++) {
+            mov_ob.at(i).show_in_line();
+        }
 
-    cout << "Movies catalogue:" << endl;
+        for(int i = 0; i < all_ep_obj.size(); i++) {
+            all_ep_obj.at(i).show_in_line();
+        }
 
-    for(int i = 0; i < mov_ob.size(); i++) {
-        cout << mov_ob.at(i).getTitle() << endl;
-    }
+        break;
 
-    cout << "Series catalogue:" << endl;
-    
-    for(int i = 0; i < series_names.size(); i++) {
-        cout << series_names.at(i) << endl;
+    case 2:
+        for(int i = 0; i < mov_ob.size(); i++) {
+            mov_ob.at(i).show_in_line();
+        }
+
+        break;
+    case 3:
+        for(int i = 0; i < all_ep_obj.size(); i++) {
+            all_ep_obj.at(i).show_in_line();
+        }
+        
+        break;
+
+    default:
+        cout << "Error" << endl;
+        break;
     }
 
     return 0;

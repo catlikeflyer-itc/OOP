@@ -23,7 +23,8 @@ class Episode : public Video{
         int getEpisode(){return episode;};
 
         void show();
-    };
+        void show_in_line();
+};
 
 Episode::Episode() : Video(){
     seriesTitle = "";
@@ -54,4 +55,9 @@ void Episode::show() {
         }
     } else { cout << "No one has rated this movie yet!" << endl; };
 }
+
+void Episode::show_in_line() {
+    cout << id << "\t" << seriesTitle << "\t" << episode << "\t" << title << "\t" << genre << endl;
+}
+
 #endif

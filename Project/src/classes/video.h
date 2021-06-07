@@ -36,6 +36,7 @@ class Video{
         vector<float> getUserRatings(){return userRatings;};
         
         virtual void show() = 0;
+        virtual void show_in_line() = 0;
     };
 
 // Default constructor
