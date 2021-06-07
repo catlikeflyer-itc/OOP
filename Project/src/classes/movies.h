@@ -8,7 +8,6 @@ class Movie : public Video{
     public:
         Movie();
         Movie(string, string, string, float, float, string);
-        
         void show();
 };
 

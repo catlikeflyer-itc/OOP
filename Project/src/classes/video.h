@@ -35,7 +35,7 @@ class Video{
         string getDesc(){return desc;};
         vector<float> getUserRatings(){return userRatings;};
         
-        virtual void show(){cout<<" "<<endl;};
+        virtual void show() = 0;
     };
 
 // Default constructor
