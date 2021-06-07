@@ -14,57 +14,86 @@
   
 using namespace std;
 
+// Returns movie vector from movies.csv 
+vector<Movie> read_movies() {
+    ifstream myFile;
+    string line, word, row[6];
+    myFile.open("../files/movies.csv");
+    int i = 0;
+    vector<Movie> movie_v;
+
+    while(getline(myFile, line)) {
+        stringstream ss(line);
+        int j = 0;
+
+        while(getline(ss, word, ',')) {
+            row[j] = word;
+            j++;
+        }
+
+        // Creates a Movie object
+        Movie m(row[0], row[1], row[2], stof(row[3]), stof(row[4]), row[5]);
+        movie_v.push_back(m);
+
+        i++;
+
+    }
+    myFile.close();
+
+    return movie_v;
+}
+
+// Returns Episode vector from series_full.csv
+tuple <vector<Episode>, vector<string>> read_series() {
+    ifstream myFile;
+    string line, word, row[9];
+    myFile.open("../files/series_full.csv");
+    int i = 0;
+    vector<Episode> ep_v;
+    vector<string> series_v;
+
+    while(getline(myFile, line)) {
+        stringstream ss(line);
+        int j = 0;
+
+        while(getline(ss, word, '\t')) {
+            row[j] = word;
+            j++;
+        }
+
+        // Creates a Movie object
+        Episode e(row[0], row[1], row[2], stof(row[3]), stof(row[4]), row[5], row[6], stoi(row[7]), stoi(row[8]));
+        ep_v.push_back(e);
+
+        if (!count(series_v.begin(), series_v.end(), row[6])) {
+            series_v.push_back(row[6]);
+        }
+
+        i++;
+
+    }
+    myFile.close();
+    return {ep_v, series_v};
+}
+
+
 int main(){
-    string text, word;
-    vector <string> row;
+    vector <Movie> mov_ob = read_movies(); // vector de objetos Movie, es decir, vector que tiene todas las peliculas como objetos individuales. (no se si funciona en practica)
+    vector <Episode> all_ep_obj = get<0>(read_series()); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
+    vector <string> series_names = get<1>(read_series());
 
-    vector <vector <string>> mov, series; // vector de vectores de strings
-    vector <Movie> mov_ob; // vector de objetos Movie, es decir, vector que tiene todas las peliculas como objetos individuales. (no se si funciona en practica)
-    vector <Episode> series_ob; // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
+    cout << "funciona" << endl;
 
-    ifstream file_mov, file_series; // cada .csv por tipo de video
+    cout << "Movies catalogue:" << endl;
 
-    file_mov.open("./files/movies.csv");
-    file_series.open("./files/series.csv");
-
-    while(getline(file_mov,text)){ // extracción de lineas del csv de peliculas
-        
-        stringstream ss(text); // cada linea del csv se vuelve un objeto ss para separar
-        row.clear(); // limpia el vector row para la siguiente linea
-
-        while(getline(ss,word,',')){ // divide cada linea en sus componentes (id,titulo,genero,duracion,rating,comentario)
-            row.push_back(word); // agrega al vector row cada 'celda' individual, como en el ejemplo
-        }
-
-        mov.push_back(row); // agrega el vector row al vector de vectores mov
+    for(int i = 0; i < mov_ob.size(); i++) {
+        cout << mov_ob.at(i).getTitle() << endl;
     }
 
-    while(getline(file_series,text)){ //extracción de lineas del csv de series, funciona igualmente al de arriba
-        
-        stringstream ss(text); 
-        row.clear();
-
-        while(getline(ss,word,',')){
-            row.push_back(word);
-        }
-
-        series.push_back(row);
-    }
-
-    for(int i = 0; i<mov.size(); i++){ // crea objetos Movie usando los componentes del vector de vectores mov y los agrega al vector de objetos Movie mov_ob
-        vector <string>a = mov[i];
-        Movie m(a[0],a[1],a[2],stof(a[3]),stof(a[4]),a[5]);
-        mov_ob.push_back(m);
-    }
-
-    for(int i = 0; i<series.size(); i++){ //mismo caso que arriba, pero con el de series, o Episode, series_ob
-        vector <string>b = mov[i];
-        Episode s(a[0],a[1],a[2],stof(a[3]),stof(a[4]),a[5],,,);    // los parametros son los mismo que en Movie, pero tiene tres extra al final
-                                                                    // que son titulo de serie, num de temporada y num de episodio. Para sacar esos tres 
-                                                                    // hay que hacer una subrutina que los separe e identifique episode number y season number
-                                                                    // I have no clue how to do that, hasta aqui queda lo de hoy
-                                                                    // Emiliano - 06/06/2021
-        series_ob.push_back(s);
+    cout << "Series catalogue:" << endl;
+    
+    for(int i = 0; i < series_names.size(); i++) {
+        cout << series_names.at(i) << endl;
     }
 
     return 0;
