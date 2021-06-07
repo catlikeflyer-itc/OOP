@@ -7,7 +7,7 @@ using namespace std;
 
 class Video{
     protected:
-        int id;
+        string id;
         string title; 
         string genre;
         float time; // Video duration
@@ -17,17 +17,17 @@ class Video{
 
     public:
         Video();
-        Video(int, string, string, float, float, string);
+        Video(string, string, string, float, float, string);
         
-        void setId(int i){id = i;};
-        void setTitle(string ti){title = ti;};
+        void setId(string i){id = i;};
+        void setTitle(string tit){title = tit;};
         void setGenre(string g){genre = g;};
-        void setTime(float t){time = t;};
+        void setTime(float tim){time = tim;};
         void setInitialRating(float r){initialRating = r;};
         void setDesc(string d){desc = d;};
         void setUserRatings(vector<float> rat){userRatings = rat;};
         
-        int getId(){return id;};
+        string getId(){return id;};
         string getTitle(){return title;};
         string getGenre(){return genre;};
         float getTime(){return time;};
@@ -40,7 +40,7 @@ class Video{
 
 // Default constructor
 Video::Video(){
-    id = 0;
+    id = "";
     title = "";
     genre = "";
     time = 0.0;
@@ -49,10 +49,10 @@ Video::Video(){
 }
 
 // Overloaded constructor
-Video::Video(int i, string ti, string g, float t, float r, string d){
+Video::Video(string i, string tit, string g, float tim, float r, string d){
     id = i;
-    time = t;
-    title = ti;
+    time = tim;
+    title = tit;
     genre = g;
     initialRating = r;
     desc = d;
