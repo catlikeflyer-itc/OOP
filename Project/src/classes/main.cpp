@@ -180,6 +180,40 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
     }
 };
 
+string ask4ID() {
+    string id;
+    cout << "Write the ID of the video:" << endl;
+    cin >> id;
+
+    return id;
+}
+
+// Asks the user if they'd like to see more details about a certain video or if they'd like to rate one
+int more_deets() {
+    string c;
+    string id;
+    cout << "1. Rate a video \n2. Get more details \n3. Exit program" << endl;
+    cin >> c;
+
+    switch (stoi(c)) {
+        case 1:
+            id = ask4ID();
+
+            break;
+
+        case 2:
+            id = ask4ID();
+            
+            break;
+        
+        default:
+            cout << "Thanks for using the program!" << endl;
+            break;
+    }
+
+    
+}
+
 int main() {
     vector <Movie> mov_ob = read_movies(); // vector de objetos Movie, es decir, vector que tiene todas las peliculas como objetos individuales. (no se si funciona en practica)
     vector <Episode> all_ep_obj = get<0>(read_series()); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
