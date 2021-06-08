@@ -43,14 +43,15 @@ vector<Movie> read_movies() {
     return movie_v;
 }
 
-// Returns a tuple containing an Episode vector and series names string vector from series_full.csv
-tuple <vector<Episode>, vector<string>> read_series() {
+// Returns a tuple containing an Episode vector, series names string vector, and genre string vector from series_full.csv
+tuple <vector<Episode>, vector<string>, vector<string>> read_series() {
     ifstream myFile;
     string line, word, row[9];
     myFile.open("../files/series_full.csv");
     int i = 0;
     vector<Episode> ep_v;
     vector<string> series_v;
+    vector<string> genre_v;
 
     while(getline(myFile, line)) {
         stringstream ss(line);
@@ -69,11 +70,15 @@ tuple <vector<Episode>, vector<string>> read_series() {
             series_v.push_back(row[6]);
         }
 
+        if (!count(series_v.begin(), series_v.end(), row[2])) {
+            series_v.push_back(row[2]);
+        }
+
         i++;
 
     }
     myFile.close();
-    return {ep_v, series_v};
+    return {ep_v, series_v, genre_v};
 }
 
 // Prints menu for user to choose what type of search they'd do, returns the int of the option the user chose
@@ -100,7 +105,7 @@ int menu() {
 }
 
 // Takes user choice as parameter to print the data of the information requested by the user
-void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, vector <string> series_list) {
+void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, vector <string> series_list, vector <string> genre_list) {
     string input;
     string min_rat;
     string max_rat;
@@ -175,6 +180,34 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
         
             break;
 
+        case 6: // Query by genre
+            for (int i = 0; i < genre_list.size(); i++) {
+                cout << i+1 << ". " << genre_list.at(i) << endl; 
+            }
+            
+            cin.ignore();
+            cout << "Enter the genre: " << endl; 
+            getline(cin, input);
+            cout << "You searched for " << input << endl;
+            
+            for (int i = 0; i < mov_ob.size(); i++) {
+                if (input == mov_ob.at(i).getGenre()) {
+                    mov_ob.at(i).show_in_line();
+                }
+            }
+
+            for (int i = 0; i < series_list.size(); i++) {
+                if (input == series_list.at(i)) {
+                    for (int j = 0; j < ep_obj.size(); j++) {
+                        if (series_list.at(i) == ep_obj.at(j).getGenre()) {
+                            ep_obj.at(j).show_in_line();
+                        }
+                    }
+                }
+            }
+            
+            break;
+
         default:
             cout << "Error" << endl;
 
@@ -233,8 +266,10 @@ int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
 
 int main() {
     vector <Movie> mov_ob = read_movies(); // vector de objetos Movie, es decir, vector que tiene todas las peliculas como objetos individuales. (no se si funciona en practica)
-    vector <Episode> all_ep_obj = get<0>(read_series()); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
-    vector <string> series_names = get<1>(read_series());
+    auto temp = read_series();
+    vector <Episode> all_ep_obj = get<0>(temp); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
+    vector <string> series_names = get<1>(temp);
+    vector <string> genre_list = get<2>(temp);
     int choice = menu();
     
     query_search(choice, mov_ob, all_ep_obj, series_names); // SHows basic info of the videos fitting on the requested query
