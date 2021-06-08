@@ -132,7 +132,7 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
             break;
 
         case 4: // Query by exact title
-            cout << "Enter the exact title: (series or movie)" << endl;
+            cout << "Enter the exact title: (series or movie)" << endl; //**NEEDS FIX
             getline(cin, input);
             
             for (int i = 0; i < mov_ob.size(); i++) {
@@ -189,29 +189,44 @@ string ask4ID() {
 }
 
 // Asks the user if they'd like to see more details about a certain video or if they'd like to rate one
-int more_deets() {
+int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
     string c;
     string id;
     cout << "1. Rate a video \n2. Get more details \n3. Exit program" << endl;
     cin >> c;
 
     switch (stoi(c)) {
-        case 1:
+        case 1: // Rate
             id = ask4ID();
 
+            return 2;
             break;
 
-        case 2:
+        case 2: // More details
             id = ask4ID();
             
+            for (int i = 0; i < mov_ob.size(); i++) {
+                if (mov_ob.at(i).getId() == id) {
+                    mov_ob.at(i).show();
+                }
+            }
+
+            for (int j = 0; j < ep_ob.size(); j++) {
+                if (ep_ob.at(j).getId() == id) {
+                    ep_ob.at(j).show();
+                }
+            }
+            
+            return 0;
             break;
         
         default:
             cout << "Thanks for using the program!" << endl;
             break;
+            return 1;
     }
 
-    
+    return 0;
 }
 
 int main() {
@@ -219,7 +234,10 @@ int main() {
     vector <Episode> all_ep_obj = get<0>(read_series()); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
     vector <string> series_names = get<1>(read_series());
     int choice = menu();
-    query_search(choice, mov_ob, all_ep_obj, series_names);
+    
+    query_search(choice, mov_ob, all_ep_obj, series_names); // SHows basic info of the videos fitting on the requested query
+
+    int details_choice = more_deets(mov_ob, all_ep_obj); // Gets an int to evaluate whether to run or stop the program
 
     return 0;
 }
