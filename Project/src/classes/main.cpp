@@ -132,8 +132,10 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
             break;
 
         case 4: // Query by exact title
-            cout << "Enter the exact title: (series or movie)" << endl; //**NEEDS FIX
+            cin.ignore();
+            cout << "Enter the exact title: (series or movie): " << endl; 
             getline(cin, input);
+            cout << "You searched for " << input << endl;
             
             for (int i = 0; i < mov_ob.size(); i++) {
                 if (input == mov_ob.at(i).getTitle()) {
