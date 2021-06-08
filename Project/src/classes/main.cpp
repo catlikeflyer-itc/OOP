@@ -76,7 +76,7 @@ tuple <vector<Episode>, vector<string>> read_series() {
     return {ep_v, series_v};
 }
 
-// Prints menu for user to choose what type of search they'd do
+// Prints menu for user to choose what type of search they'd do, returns the int of the option the user chose
 int menu() {
     string user_input;
     bool ready = false;
@@ -84,11 +84,11 @@ int menu() {
     while (!ready) {
         cout << "Welcome to Tecsney+\n---------------------------------------------------\nAn online movie catalogue\n\n" << endl;
         cout << "What would you like to do today?: \n" << endl;
-        cout << "1. See full catalogue \n2. See movies catalogue \n3. See series catalogue \n4. Search for specific collection" << endl;
+        cout << "1. See full catalogue \n2. See movies catalogue \n3. See series catalogue \n4. Search for specific collection \n5. Search by rating range \n6. Search by genre" << endl;
 
         cin >> user_input;
 
-        if (user_input == "1" || user_input == "3" || user_input == "2" || user_input == "4") {
+        if (user_input == "1" || user_input == "3" || user_input == "2" || user_input == "4" || user_input == "5" || user_input == "6") {
             cout << "Searching..." << endl;
             return stoi(user_input);
         }
@@ -99,42 +99,93 @@ int menu() {
     return 404;
 }
 
+// Takes user choice as parameter to print the data of the information requested by the user
+void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, vector <string> series_list) {
+    string input;
+    string min_rat;
+    string max_rat;
+
+    switch (choice) {
+        case 1: // Query all
+            for(int i = 0; i < mov_ob.size(); i++) {
+                mov_ob.at(i).show_in_line();
+            }
+
+            for(int i = 0; i < ep_obj.size(); i++) {
+                ep_obj.at(i).show_in_line();
+            }
+
+            break;
+
+        case 2: // Query movies
+            for(int i = 0; i < mov_ob.size(); i++) {
+                mov_ob.at(i).show_in_line();
+            }
+
+            break;
+
+        case 3: // Query series episodes
+            for(int i = 0; i < ep_obj.size(); i++) {
+                ep_obj.at(i).show_in_line();
+            }
+            
+            break;
+
+        case 4: // Query by exact title
+            cout << "Enter the exact title: (series or movie)" << endl;
+            getline(cin, input);
+            
+            for (int i = 0; i < mov_ob.size(); i++) {
+                if (input == mov_ob.at(i).getTitle()) {
+                    mov_ob.at(i).show_in_line();
+                }
+            }
+
+            for (int i = 0; i < series_list.size(); i++) {
+                if (input == series_list.at(i)) {
+                    for (int j = 0; j < ep_obj.size(); j++) {
+                        if (series_list.at(i) == ep_obj.at(j).getSeriesTitle()) {
+                            ep_obj.at(j).show_in_line();
+                        }
+                    }
+                }
+            }
+            
+            break;
+
+        case 5: // Query by range of ratings
+            cout << "Minimun rating (max 5): " << endl;
+            cin >> min_rat;
+            cout << "Max rating (max 5): " << endl;
+            cin >> max_rat;
+
+            for (int i = 0; i < mov_ob.size(); i++) {
+                if (mov_ob.at(i).getInitialRating() >= stof(min_rat) && mov_ob.at(i).getInitialRating() <= stof(max_rat)) {
+                    mov_ob.at(i).show_in_line();
+                }
+            }
+
+            for (int j = 0; j < ep_obj.size(); j++) {
+                if (ep_obj.at(j).getInitialRating() >= stof(min_rat) && ep_obj.at(j).getInitialRating() <= stof(max_rat)) {
+                    ep_obj.at(j).show_in_line();
+                }
+            }
+        
+            break;
+
+        default:
+            cout << "Error" << endl;
+
+            break;
+    }
+};
+
 int main() {
     vector <Movie> mov_ob = read_movies(); // vector de objetos Movie, es decir, vector que tiene todas las peliculas como objetos individuales. (no se si funciona en practica)
     vector <Episode> all_ep_obj = get<0>(read_series()); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
     vector <string> series_names = get<1>(read_series());
     int choice = menu();
-
-    switch (choice)
-    {
-    case 1:
-        for(int i = 0; i < mov_ob.size(); i++) {
-            mov_ob.at(i).show_in_line();
-        }
-
-        for(int i = 0; i < all_ep_obj.size(); i++) {
-            all_ep_obj.at(i).show_in_line();
-        }
-
-        break;
-
-    case 2:
-        for(int i = 0; i < mov_ob.size(); i++) {
-            mov_ob.at(i).show_in_line();
-        }
-
-        break;
-    case 3:
-        for(int i = 0; i < all_ep_obj.size(); i++) {
-            all_ep_obj.at(i).show_in_line();
-        }
-        
-        break;
-
-    default:
-        cout << "Error" << endl;
-        break;
-    }
+    query_search(choice, mov_ob, all_ep_obj, series_names);
 
     return 0;
 }
