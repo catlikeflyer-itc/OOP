@@ -63,7 +63,7 @@ tuple <vector<Episode>, vector<string>, vector<string>> read_series() {
             j++;
         }
 
-        // Creates a Movie object
+        // Creates a Episode object
         Episode e(row[0], row[1], row[2], stof(row[3]), stof(row[4]), row[5], row[6], stoi(row[7]), stoi(row[8]));
         ep_v.push_back(e);
 
