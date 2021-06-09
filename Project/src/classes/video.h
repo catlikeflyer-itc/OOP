@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "link_list.h"
+
 using namespace std;
 
 class Video{
@@ -13,7 +15,7 @@ class Video{
         float time; // Video duration
         float initialRating;
         string desc; // Video description 
-        vector<float> userRatings; 
+        struct Node* userRatings; 
 
     public:
         Video();
@@ -25,7 +27,7 @@ class Video{
         void setTime(float tim){time = tim;};
         void setInitialRating(float r){initialRating = r;};
         void setDesc(string d){desc = d;};
-        void setUserRatings(vector<float> rat){userRatings = rat;};
+        void setUserRatings(struct Node* rat){userRatings = rat;};
         
         string getId(){return id;};
         string getTitle(){return title;};
@@ -33,7 +35,7 @@ class Video{
         float getTime(){return time;};
         float getInitialRating(){return initialRating;};
         string getDesc(){return desc;};
-        vector<float> getUserRatings(){return userRatings;};
+        struct Node* getUserRatings(){return userRatings;};
         
         virtual void show() = 0;
         virtual void show_in_line() = 0;
