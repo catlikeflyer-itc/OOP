@@ -253,8 +253,9 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
                     }
                 }
 
-                cout << "\n\nPlease introduce your desired rating" << endl;
+                cout << "\nPlease introduce your desired rating: " << endl;
                 cin >> score;
+
                 if (score>5){
                     score = 5;
                     add_score(&head,score);
@@ -264,6 +265,7 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
                         score = 0;
                         add_score(&head,score);
                     }
+                    add_score(&head, score);
                 }
 
                 add_score(&head,score);
