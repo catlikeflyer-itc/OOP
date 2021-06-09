@@ -45,14 +45,13 @@ vector<Movie> read_movies() {
 }
 
 // Returns a tuple containing an Episode vector and series names string vector from series_full.csv
-tuple <vector<Episode>, vector<string>, vector<string>> read_series() {
+tuple <vector<Episode>, vector<string>> read_series() {
     ifstream myFile;
     string line, word, row[9];
     myFile.open("../files/series_full.csv");
     int i = 0;
     vector<Episode> ep_v;
     vector<string> series_v;
-    vector<string> genre_list;
 
     while(getline(myFile, line)) {
         stringstream ss(line);
@@ -63,7 +62,7 @@ tuple <vector<Episode>, vector<string>, vector<string>> read_series() {
             j++;
         }
 
-        // Creates a Episode object
+        // Creates a Movie object
         Episode e(row[0], row[1], row[2], stof(row[3]), stof(row[4]), row[5], row[6], stoi(row[7]), stoi(row[8]));
         ep_v.push_back(e);
 
@@ -71,15 +70,11 @@ tuple <vector<Episode>, vector<string>, vector<string>> read_series() {
             series_v.push_back(row[6]);
         }
 
-        if (!count(series_v.begin(), series_v.end(), row[2])) {
-            series_v.push_back(row[2]);
-        }
-
         i++;
 
     }
     myFile.close();
-    return {ep_v, series_v, genre_list};
+    return {ep_v, series_v};
 }
 
 // Prints menu for user to choose what type of search they'd do, returns the int of the option the user chose
@@ -106,7 +101,7 @@ int menu() {
 }
 
 // Takes user choice as parameter to print the data of the information requested by the user
-void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, vector <string> series_list, vector <string> genre_list) {
+void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, vector <string> series_list) {
     string input;
     string min_rat;
     string max_rat;
@@ -210,8 +205,6 @@ int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
     switch (stoi(c)) {
         case 1: // Rate
             id = ask4ID();
-
-            
             
             for (int i = 0; i < mov_ob.size(); i++) {
                 if (mov_ob.at(i).getId() == id) {
@@ -230,11 +223,22 @@ int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
                 }
             }
 
-            cout << "\n\nIngrese el rating que desea otorgarle al video" << endl;
+            cout << "\n\nPlease introduce your desired rating" << endl;
             cin >> score;
+            if(score>5){
+                score = 5;
+                add_score(&head,score);
+            }
+            else{
+                if(score<0){
+                    score = 0;
+                    add_score(&head,score);
+                }
+            }
+
             add_score(&head,score);
 
-            cout << "El rating actual del video es: " << show_avg(head) << "\nMuchas gracias por su contribucion!" << endl;
+            cout << "The overall rating would be: " << show_avg(head) << "\nThank you so much!" << endl;
 
             return 0;
             break;
@@ -270,11 +274,9 @@ int main() {
     vector <Movie> mov_ob = read_movies(); // vector de objetos Movie, es decir, vector que tiene todas las peliculas como objetos individuales. (no se si funciona en practica)
     vector <Episode> all_ep_obj = get<0>(read_series()); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
     vector <string> series_names = get<1>(read_series());
-    vector <string> genre_list = get<2>(read_series());
     int choice = menu();
-
-    query_search(choice, mov_ob, all_ep_obj, series_names, genre_list); // SHows basic info of the videos fitting on the requested query
-
+    
+    query_search(choice, mov_ob, all_ep_obj, series_names); // Shows basic info of the videos fitting on the requested query
 
     int details_choice = more_deets(mov_ob, all_ep_obj); // Gets an int to evaluate whether to run or stop the program
 

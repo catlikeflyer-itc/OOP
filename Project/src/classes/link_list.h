@@ -11,7 +11,7 @@ struct Node {
     struct Node* next;
 };
 
-void add_score(struct Node** list, float data) {
+void add_score(struct Node** list, float data){
     struct Node* node = (struct Node*)malloc(sizeof(struct Node));
     struct Node* last = *list;
 
@@ -30,7 +30,7 @@ void add_score(struct Node** list, float data) {
     return;
 }
 
-float show_avg(struct Node* node) {
+float show_avg(struct Node* node){
     float sum = 0;
     int i = 0;
     
@@ -41,6 +41,16 @@ float show_avg(struct Node* node) {
     }
 
     return sum/i;
+}
+
+int get_size(struct Node* node){
+    int i = 0;
+    
+    while (node != NULL) {
+        i++;
+    }
+
+    return i;
 }
 
 #endif

@@ -1,6 +1,7 @@
 #ifndef Series_h
 #define Series_h
 #include "video.h"
+#include "link_list.h"
 
 // Class Series
 
@@ -49,9 +50,9 @@ void Episode::show() {
     cout << "Rating (max 5): " << initialRating << endl;
     cout << "Review: " << desc << endl;
 
-    if (userRatings.size() > 0) {
-        for (int i = 0; i < userRatings.size(); i++){
-            cout << "User ratings: " << userRatings[i] << endl;
+    if (get_size(userRatings) > 0) {
+        for (int i = 0; i < get_size(userRatings); i++){
+            cout << "User ratings: " << userRatings->score << endl;
         }
     } else { cout << "No one has rated this movie yet!" << endl; };
 }
