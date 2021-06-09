@@ -146,10 +146,12 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
                 cin.ignore();
                 cout << "Enter the exact title: (series or movie)" << endl; 
                 getline(cin, input);
+                bool nottitle = true;
                 
                 for (int i = 0; i < mov_ob.size(); i++) {
                     if (input == mov_ob.at(i).getTitle()) {
                         mov_ob.at(i).show_in_line();
+                        nottitle = false;
                     }
                 }
 
@@ -158,9 +160,14 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
                         for (int j = 0; j < ep_obj.size(); j++) {
                             if (series_list.at(i) == ep_obj.at(j).getSeriesTitle()) {
                                 ep_obj.at(j).show_in_line();
+                                nottitle = false;
                             }
                         }
                     }
+                }
+
+                if (nottitle) {
+                    cout << "There is no match" << endl;
                 }
                 
                 break;
@@ -187,21 +194,28 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
 
             case 6: // Query by genre
                 cin.ignore();
-                cout << "Enter the exact title: (series or movie)" << endl; //**NEEDS FIX
+                cout << "Enter the exact genre: " << endl; 
                 getline(cin, input);
+                bool notgenre = true;
                 
                 for (int i = 0; i < mov_ob.size(); i++) {
                     if (input == mov_ob.at(i).getGenre()) {
                         mov_ob.at(i).show_in_line();
+                        notgenre = false;
                     }
                 }
 
                 for (int j = 0; j < ep_obj.size(); j++) {
                     if (input == ep_obj.at(j).getGenre()) {
                         ep_obj.at(j).show_in_line();
-                    }
+                        notgenre = false;
+                    } 
                 }
                 
+                if (notgenre) {
+                    cout << "There is no match" << endl;
+                }
+
                 break;
 
             default:
