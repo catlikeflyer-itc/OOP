@@ -99,7 +99,7 @@ int menu() {
                 ready = true;
 
                 return stoi(user_input);
-            } else { throw "Not a valid choice. ";}
+            } else { cout << "Not valid try again" << endl; }
         }
         catch (string input) {
             ready = false;
@@ -291,6 +291,10 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
                 }
                 
                 return 0;
+                break;
+            
+            case 3: // More details
+                return 1;
                 break;
             
             default:
