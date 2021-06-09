@@ -29,5 +29,6 @@ The program is object-oriented, with a base class calles video that holds the at
 - The requests are limited once per runtime, if the user wishes to make another request, the program has to be executed again.
 - If there is a change in the structure of the .csv files that act as a database, there would be conversion errors as the strings are converted into floats or integers.
 - The OS should have at least c++ 10 to run the program correctly.
+- There where changes made to the original series.csv file due to it lacking certain information, the changed file is saved under the name series_full.csv.
 
 
