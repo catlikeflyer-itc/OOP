@@ -193,6 +193,12 @@ string ask4ID() {
 int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
     string c;
     string id;
+
+    bool get = false;
+    int index = 0;
+    float score;
+    struct Node* head = NULL;
+
     cout << "1. Rate a video \n2. Get more details \n3. Exit program" << endl;
     cin >> c;
 
@@ -200,10 +206,7 @@ int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
         case 1: // Rate
             id = ask4ID();
 
-            bool get = false;
-            int index = 0;
-            float score;
-            struct Node* head = NULL;
+            
             
             for (int i = 0; i < mov_ob.size(); i++) {
                 if (mov_ob.at(i).getId() == id) {
@@ -226,7 +229,7 @@ int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
             cin >> score;
             add_score(&head,score);
 
-            cout << "El rating actual del video es: " << show_avg(head) << "\nMuchas gracias por su contribución" << endl;
+            cout << "El rating actual del video es: " << show_avg(head) << "\nMuchas gracias por su contribucion!" << endl;
 
             return 0;
             break;
