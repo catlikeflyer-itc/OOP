@@ -111,111 +111,110 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
     string min_rat;
     string max_rat;
 
-    switch (choice) {
-        case 1: // Query all
-            for(int i = 0; i < mov_ob.size(); i++) {
-                mov_ob.at(i).show_in_line();
-            }
-
-            for(int i = 0; i < ep_obj.size(); i++) {
-                ep_obj.at(i).show_in_line();
-            }
-
-            break;
-
-        case 2: // Query movies
-            for(int i = 0; i < mov_ob.size(); i++) {
-                mov_ob.at(i).show_in_line();
-            }
-
-            break;
-
-        case 3: // Query series episodes
-            for(int i = 0; i < ep_obj.size(); i++) {
-                ep_obj.at(i).show_in_line();
-            }
-            
-            break;
-
-        case 4: // Query by exact title
-            cin.ignore();
-            cout << "Enter the exact title: (series or movie)" << endl; 
-            getline(cin, input);
-            
-            for (int i = 0; i < mov_ob.size(); i++) {
-                if (input == mov_ob.at(i).getTitle()) {
+        switch (choice) {
+            case 1: // Query all
+                for(int i = 0; i < mov_ob.size(); i++) {
                     mov_ob.at(i).show_in_line();
                 }
-            }
 
-            for (int i = 0; i < series_list.size(); i++) {
-                if (input == series_list.at(i)) {
-                    for (int j = 0; j < ep_obj.size(); j++) {
-                        if (series_list.at(i) == ep_obj.at(j).getSeriesTitle()) {
-                            ep_obj.at(j).show_in_line();
+                for(int i = 0; i < ep_obj.size(); i++) {
+                    ep_obj.at(i).show_in_line();
+                }
+
+                break;
+
+            case 2: // Query movies
+                for(int i = 0; i < mov_ob.size(); i++) {
+                    mov_ob.at(i).show_in_line();
+                }
+
+                break;
+
+            case 3: // Query series episodes
+                for(int i = 0; i < ep_obj.size(); i++) {
+                    ep_obj.at(i).show_in_line();
+                }
+                
+                break;
+
+            case 4: // Query by exact title
+                cin.ignore();
+                cout << "Enter the exact title: (series or movie)" << endl; 
+                getline(cin, input);
+                
+                for (int i = 0; i < mov_ob.size(); i++) {
+                    if (input == mov_ob.at(i).getTitle()) {
+                        mov_ob.at(i).show_in_line();
+                    }
+                }
+
+                for (int i = 0; i < series_list.size(); i++) {
+                    if (input == series_list.at(i)) {
+                        for (int j = 0; j < ep_obj.size(); j++) {
+                            if (series_list.at(i) == ep_obj.at(j).getSeriesTitle()) {
+                                ep_obj.at(j).show_in_line();
+                            }
                         }
                     }
                 }
-            }
+                
+                break;
+
+            case 5: // Query by range of ratings
+                cout << "Minimun rating (max 5): " << endl;
+                cin >> min_rat;
+                cout << "Max rating (max 5): " << endl;
+                cin >> max_rat;
+
+                for (int i = 0; i < mov_ob.size(); i++) {
+                    if (mov_ob.at(i).getInitialRating() >= stof(min_rat) && mov_ob.at(i).getInitialRating() <= stof(max_rat)) {
+                        mov_ob.at(i).show_in_line();
+                    }
+                }
+
+                for (int j = 0; j < ep_obj.size(); j++) {
+                    if (ep_obj.at(j).getInitialRating() >= stof(min_rat) && ep_obj.at(j).getInitialRating() <= stof(max_rat)) {
+                        ep_obj.at(j).show_in_line();
+                    }
+                }
             
-            break;
+                break;
 
-        case 5: // Query by range of ratings
-            cout << "Minimun rating (max 5): " << endl;
-            cin >> min_rat;
-            cout << "Max rating (max 5): " << endl;
-            cin >> max_rat;
-
-            for (int i = 0; i < mov_ob.size(); i++) {
-                if (mov_ob.at(i).getInitialRating() >= stof(min_rat) && mov_ob.at(i).getInitialRating() <= stof(max_rat)) {
-                    mov_ob.at(i).show_in_line();
+            case 6: // Query by genre
+                cin.ignore();
+                cout << "Enter the exact title: (series or movie)" << endl; //**NEEDS FIX
+                getline(cin, input);
+                
+                for (int i = 0; i < mov_ob.size(); i++) {
+                    if (input == mov_ob.at(i).getGenre()) {
+                        mov_ob.at(i).show_in_line();
+                    }
                 }
-            }
 
-            for (int j = 0; j < ep_obj.size(); j++) {
-                if (ep_obj.at(j).getInitialRating() >= stof(min_rat) && ep_obj.at(j).getInitialRating() <= stof(max_rat)) {
-                    ep_obj.at(j).show_in_line();
+                for (int j = 0; j < ep_obj.size(); j++) {
+                    if (input == ep_obj.at(j).getGenre()) {
+                        ep_obj.at(j).show_in_line();
+                    }
                 }
-            }
-        
-            break;
+                
+                break;
 
-        case 6: // Query by genre
-            cin.ignore();
-            cout << "Enter the exact title: (series or movie)" << endl; //**NEEDS FIX
-            getline(cin, input);
-            
-            for (int i = 0; i < mov_ob.size(); i++) {
-                if (input == mov_ob.at(i).getGenre()) {
-                    mov_ob.at(i).show_in_line();
-                }
-            }
+            default:
+                cout << "Error, Invalid choice!!!" << endl;
+                break;
+        }
+    };
 
-            for (int j = 0; j < ep_obj.size(); j++) {
-                if (input == ep_obj.at(j).getGenre()) {
-                    ep_obj.at(j).show_in_line();
-                }
-            }
-            
-            break;
-
-        default:
-            cout << "Error" << endl;
-
-            break;
-    }
-};
-
-string ask4ID() {
+    string ask4ID() {
     string id;
     cout << "Write the ID of the video:" << endl;
     cin >> id;
 
     return id;
-}
+    }
 
-// Asks the user if they'd like to see more details about a certain video or if they'd like to rate one
-int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
+    // Asks the user if they'd like to see more details about a certain video or if they'd like to rate one
+    int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
     string c;
     string id;
 
@@ -250,7 +249,7 @@ int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
 
             cout << "\n\nPlease introduce your desired rating" << endl;
             cin >> score;
-            if(score>5){
+            if (score>5){
                 score = 5;
                 add_score(&head,score);
             }
@@ -287,9 +286,10 @@ int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
             break;
         
         default:
-            cout << "Thanks for using the program!" << endl;
-            break;
+            cout << "Invalid Choice!!!" << endl;
+            
             return 1;
+            break;
     }
 
     return 0;
@@ -302,10 +302,12 @@ int main() {
     vector <string> series_names = get<1>(temp);
     vector <string> genre_list = get<2>(temp);
     int choice = menu();
+    string endprogram;
     
     query_search(choice, mov_ob, all_ep_obj, series_names, genre_list); // Shows basic info of the videos fitting on the requested query
-
     int details_choice = more_deets(mov_ob, all_ep_obj); // Gets an int to evaluate whether to run or stop the program
+    
+    cout << "Thanks for using the program!" << endl;
 
     return 0;
 }
