@@ -272,7 +272,7 @@ int main() {
     vector <string> genre_list = get<2>(temp);
     int choice = menu();
     
-    query_search(choice, mov_ob, all_ep_obj, series_names); // SHows basic info of the videos fitting on the requested query
+    query_search(choice, mov_ob, all_ep_obj, series_names, genre_list); // SHows basic info of the videos fitting on the requested query
 
     int details_choice = more_deets(mov_ob, all_ep_obj); // Gets an int to evaluate whether to run or stop the program
 
