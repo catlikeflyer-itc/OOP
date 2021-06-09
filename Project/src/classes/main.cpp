@@ -11,6 +11,7 @@
 #include <string>
 #include "movies.h"
 #include "series.h"
+#include "link_list.h"
   
 using namespace std;
 
@@ -43,7 +44,7 @@ vector<Movie> read_movies() {
     return movie_v;
 }
 
-// Returns a tuple containing an Episode vector, series names string vector, and genre string vector from series_full.csv
+// Returns a tuple containing an Episode vector and series names string vector from series_full.csv
 tuple <vector<Episode>, vector<string>, vector<string>> read_series() {
     ifstream myFile;
     string line, word, row[9];
@@ -51,7 +52,7 @@ tuple <vector<Episode>, vector<string>, vector<string>> read_series() {
     int i = 0;
     vector<Episode> ep_v;
     vector<string> series_v;
-    vector<string> genre_v;
+    vector<string> genre_list;
 
     while(getline(myFile, line)) {
         stringstream ss(line);
@@ -78,7 +79,7 @@ tuple <vector<Episode>, vector<string>, vector<string>> read_series() {
 
     }
     myFile.close();
-    return {ep_v, series_v, genre_v};
+    return {ep_v, series_v, genre_list};
 }
 
 // Prints menu for user to choose what type of search they'd do, returns the int of the option the user chose
@@ -137,10 +138,8 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
             break;
 
         case 4: // Query by exact title
-            cin.ignore();
-            cout << "Enter the exact title: (series or movie): " << endl; 
+            cout << "Enter the exact title: (series or movie)" << endl; //**NEEDS FIX
             getline(cin, input);
-            cout << "You searched for " << input << endl;
             
             for (int i = 0; i < mov_ob.size(); i++) {
                 if (input == mov_ob.at(i).getTitle()) {
@@ -180,34 +179,6 @@ void query_search(int choice, vector <Movie> mov_ob, vector <Episode> ep_obj, ve
         
             break;
 
-        case 6: // Query by genre
-            for (int i = 0; i < genre_list.size(); i++) {
-                cout << i+1 << ". " << genre_list.at(i) << endl; 
-            }
-            
-            cin.ignore();
-            cout << "Enter the genre: " << endl; 
-            getline(cin, input);
-            cout << "You searched for " << input << endl;
-            
-            for (int i = 0; i < mov_ob.size(); i++) {
-                if (input == mov_ob.at(i).getGenre()) {
-                    mov_ob.at(i).show_in_line();
-                }
-            }
-
-            for (int i = 0; i < series_list.size(); i++) {
-                if (input == series_list.at(i)) {
-                    for (int j = 0; j < ep_obj.size(); j++) {
-                        if (series_list.at(i) == ep_obj.at(j).getGenre()) {
-                            ep_obj.at(j).show_in_line();
-                        }
-                    }
-                }
-            }
-            
-            break;
-
         default:
             cout << "Error" << endl;
 
@@ -227,6 +198,12 @@ string ask4ID() {
 int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
     string c;
     string id;
+
+    bool get = false;
+    int index = 0;
+    float score;
+    struct Node* head = NULL;
+
     cout << "1. Rate a video \n2. Get more details \n3. Exit program" << endl;
     cin >> c;
 
@@ -234,7 +211,32 @@ int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
         case 1: // Rate
             id = ask4ID();
 
-            return 2;
+            
+            
+            for (int i = 0; i < mov_ob.size(); i++) {
+                if (mov_ob.at(i).getId() == id) {
+                    add_score(&head, mov_ob.at(i).getInitialRating());
+                    index = i;
+                    get = true;
+                    break;
+                }
+            }
+
+            if(get != true){
+                for (int j = 0; j < ep_ob.size(); j++) {
+                    if (ep_ob.at(j).getId() == id) {
+                        add_score(&head, ep_ob.at(j).getInitialRating());
+                    }
+                }
+            }
+
+            cout << "\n\nIngrese el rating que desea otorgarle al video" << endl;
+            cin >> score;
+            add_score(&head,score);
+
+            cout << "El rating actual del video es: " << show_avg(head) << "\nMuchas gracias por su contribucion!" << endl;
+
+            return 0;
             break;
 
         case 2: // More details
@@ -266,13 +268,13 @@ int more_deets(vector <Movie> mov_ob, vector <Episode> ep_ob) {
 
 int main() {
     vector <Movie> mov_ob = read_movies(); // vector de objetos Movie, es decir, vector que tiene todas las peliculas como objetos individuales. (no se si funciona en practica)
-    auto temp = read_series();
-    vector <Episode> all_ep_obj = get<0>(temp); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
-    vector <string> series_names = get<1>(temp);
-    vector <string> genre_list = get<2>(temp);
+    vector <Episode> all_ep_obj = get<0>(read_series()); // vector de objetos Episode, mismo caso que arriba (no estoy seguro de que funcione en práctica)
+    vector <string> series_names = get<1>(read_series());
+    vector <string> genre_list = get<2>(read_series());
     int choice = menu();
-    
+
     query_search(choice, mov_ob, all_ep_obj, series_names, genre_list); // SHows basic info of the videos fitting on the requested query
+
 
     int details_choice = more_deets(mov_ob, all_ep_obj); // Gets an int to evaluate whether to run or stop the program
 
